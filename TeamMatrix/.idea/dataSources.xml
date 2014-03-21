@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" hash="522080892">
+    <data-source source="LOCAL" name="Django default" uuid="7811fd35-1b30-44e3-8156-648f530b2f81">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/RequirementTracker/../RT_MW.db</jdbc-url>
+      <libraries />
+    </data-source>
+  </component>
+</project>
+

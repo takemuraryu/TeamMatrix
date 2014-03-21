@@ -1,0 +1,264 @@
+{% extends "RT_MW/base2.html" %}
+{% block title %}Project Deadline Calendar!{% endblock %}
+{% block jsfile %}
+	<script type="text/javascript">
+
+		$(document).ready(function()
+		{
+			var date = new Date();
+			var d = date.getDate();
+			var m = date.getMonth();
+			var y = date.getFullYear();
+
+			/*
+				Initialize fullCalendar and store into variable.
+				Why in variable?
+				Because doing so we can use it inside other function.
+				In order to modify its option later.
+			*/
+
+			var calendar = $('#calendar').fullCalendar(
+			{
+				/*
+					header option will define our calendar header.
+					left define what will be at left position in calendar
+					center define what will be at center position in calendar
+					right define what will be at right position in calendar
+				*/
+				header:
+				{
+					left: 'prev,next today',
+					center: 'title',
+					right: 'month'
+				},
+				/*
+					defaultView option used to define which view to show by default,
+					for example we have used agendaWeek.
+				*/
+				defaultView: 'month',
+				/*
+					selectable:true will enable user to select datetime slot
+					selectHelper will add helpers for selectable.
+				*/
+				selectable: false,
+				selectHelper: false,
+				/*
+					when user select timeslot this option code will execute.
+					It has three arguments. Start,end and allDay.
+					Start means starting time of event.
+					End means ending time of event.
+					allDay means if events is for entire day or not.
+				*/
+				select: function(start, end, allDay)
+				{
+					/*
+						after selection user will be promted for enter title for event.
+					*/
+					var title = prompt('Event Title:');
+					/*
+						if title is enterd calendar will add title and event into fullCalendar.
+					*/
+					if (title)
+					{
+						calendar.fullCalendar('renderEvent',
+							{
+								title: title,
+								start: start,
+								end: end,
+								allDay: allDay
+							},
+							true // make the event "stick"
+						);
+					}
+					calendar.fullCalendar('unselect');
+				},
+
+				editable: false,
+
+				events: [
+                      {% if spec %}
+                          {% for s in spec %}
+                          {
+                              title: '{{ s.attrTitle }}',
+                              start: new Date({{ s.attrDate.year}}, {{ s.attrDate.month}}-1, {{ s.attrDate.day}}),
+                              end: new Date({{ s.attrDate.year}}, {{ s.attrDate.month}}-1, {{ s.attrDate.day}}),
+                              allday: false,
+                              {% if s.flag %}
+                                color: '#CCCCCC',
+
+                                  {% elif s.priority == 1 %}
+                                  color: '#FE2E2E',
+                                  {% elif s.priority == 2 %}
+                                  color: '#FE9A2E',
+                                  {% elif s.priority == 3 %}
+                                  color: '#F7FE2E',
+                                  {% elif s.priority == 4 %}
+                                  color: '#9AFE2E',
+                                  {% elif s.priority == 5 %}
+                                  color: '#D8F781',
+                                  {% endif %}
+
+                              url: '/project_detail/{{ projectid }}/detail_todo_attr/{{s.attrID}}'
+                          },
+                          {% endfor %}
+                      {% endif %}
+
+				]
+
+			});
+
+		});
+
+	</script>
+{% endblock %}
+
+{% block body_button %}
+                <div class="pro-list-button">
+
+                {% if leader %}
+
+                <div style="width:86px;height:40px; overflow:hidden; float:left;">
+                    <form id="login_form" method="get" action="/user_interface/create_project/">
+                            <input class="button tiny" type="submit" name="create_new_project" value="Create">
+                    </form>
+                </div>
+
+                <div style="width:76px;height:40px; overflow:hidden;  float:left;">
+                    <form id="login_form" method="get" action="/user_interface/join_project/">
+                        <span style="position:relative"><input class="button tiny" type="submit" name="join_project" value="Join"></span>
+                    </form>
+                </div>
+
+                <div style="width:76px;height:40px; overflow:hidden;  float:right;">
+                    <form id="invite_member" method="get" action="invite_member/">
+                        <input type="hidden" name="projName" value="{{ project.projName }}" />
+                        <input class="button tiny" type="submit" name="join_project" value="Invite">
+                    </form>
+                </div>
+
+                     <div style="width:86px; float:left;">
+                       <form id="delete_project" method="get" action="/project_detail/{{ projectid }}/delete_project/">
+                            <input type="submit" value="Delete" class="button tiny"/>
+                       </form>
+                     </div>
+
+                     <div style="width:76px; float:left;">
+                         <form id="complete_project" method="get" action="/project_detail/{{ projectid }}/complete_project/">
+							<input type="submit" value="Complete" class="button tiny" />
+						 </form>
+                     </div>
+                {% else %}
+                <div style="width:86px; float:left;">
+                    <form id="login_form" method="get" action="/user_interface/create_project/">
+                            <input class="button tiny" type="submit" name="create_new_project" value="Create">
+                    </form>
+                </div>
+                <div style="width:76px; float:left;">
+                    <form id="quit_form" method="get" action="/project_detail/{{ projectid }}/quit_project/">
+                            <input class="button tiny" type="submit" name="quit_project" value="Quit">
+                    </form>
+                </div>
+                <div style="width:76px; float:right;">
+                    <form id="login_form" method="get" action="/user_interface/join_project/">
+                        <span style="position:relative"><input class="button tiny" type="submit" name="join_project" value="Join"></span>
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+{% endblock %}
+
+{#{% block detail_project %}#}
+{#        <div class="panel" id="detail_project" >#}
+{#            <div class="pro-list-detail" >#}
+{#                     <h5> {{ projectid }} </h5>#}
+{#                    <ul>#}
+{#                        <li>Project : {{ project.projID }}</li>#}
+{##}
+{#                        {% if leader %}#}
+{#                            <li>Enroll Key : {{ project.enrollmentKey }}</li>#}
+{#                        {% endif %}#}
+{#                         <li>Description : {{ project.description }}</li>#}
+{#                    </ul>#}
+{#             </div>#}
+{#                <h6> Work-On Members: </h6>#}
+{#            <div class="pro-list-members-detail" >#}
+{#                        {% if users %}#}
+{#                    <ul >#}
+{#                        {% for user in users %}#}
+{#                        <li>{{ user }} </li>#}
+{#                        {% endfor %}#}
+{#                    </ul>#}
+{#                         {% endif %}#}
+{#             </div>#}
+{#      	</div>#}
+{#{% endblock %}#}
+
+{% block attr_list %}
+       <div class="panel list">
+                <h5>Specification List: </h5>
+            <div class="pro-list">
+                        {% if spec %}
+                    <ul>
+                        {% for s in spec %}
+                        <li>
+                            <a href="/project_detail/{{ projectid }}/single_todo_attr/{{s.attrID}}">{{ s.attrTitle }}</a>
+                            {% if s.flag %}
+                                <span style="float:right;">✓</span>
+                            {% endif %}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                         {% else %}
+                                <strong>no specifications</strong>
+                         {% endif %}
+
+             </div>
+         <div class="row">
+            <div class="pro-list-button">
+                <div style="width:90px; float:left;">
+                    <form id="create_todo_attr" method="get" action="create_todo_attr/">
+                            <input type="hidden" name="projName" value="{{ project.projName }}" />
+                            <input class="button tiny" type="submit" name="create_new_project" value="Create">
+                    </form>
+                </div>
+            </div>
+        </div>
+</div>
+
+
+{% endblock %}
+
+{% block body_block %}
+        <div id='calendar'></div>
+{% endblock %}
+
+{% block detail_project %}
+    <div class="panel" style="width:720px; height:135px; margin-top:8px;">
+            <div class="large-3 columns" >
+                <h6 style="color:#2285a2;"> Work-On Members: </h6>
+                        {% if users %}
+                    <ul style="width:100px; height:60px; overflow-x:scroll;">
+                        {% for user in users %}
+                        <li>{{ user }} </li>
+                        {% endfor %}
+                    </ul>
+                         {% endif %}
+             </div>
+            <div class="large-7 columns" >
+                     <h5 style="color:#2285a2;"> {{ projectid }} </h5>
+
+                        <div class="large-5 columns">
+                            <ul style="">
+                                <li>Project : {{ project.projID }}</li>
+
+                            {% if leader %}
+                                <li>Enroll Key : {{ project.enrollmentKey }}</li>
+                            {% endif %}
+                            </ul>
+                        </div>
+                         <div class="large-5 columns">Description : <span style="height:50px; overflow-x:scroll;">{{ project.description }}</span></div>
+                    </ul>
+             </div>
+
+      	</div>
+{% endblock %}

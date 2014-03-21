@@ -1,0 +1,41 @@
+{% extends "RT_MW/base.html" %}
+{% block title %}-Create a project{% endblock %}
+{% block body_button %}
+                <div class="pro-list-button">
+                <div style="width:90px; float:left;">
+                    <form id="login_form" method="get" action="/user_interface/create_project/">
+                            <input class="button tiny" type="submit" name="create_new_project" value="Create">
+                    </form>
+                </div>
+                <div style="width:90px; float:right;">
+                    <form id="login_form" method="get" action="/user_interface/join_project/">
+                        <span style="position:relative"><input class="button tiny" type="submit" name="join_project" value="Join"></span>
+                    </form>
+                </div>
+            </div>
+{% endblock %}
+{% block body_block %}
+              <form data-abide id="create_project" method="post" action="/user_interface/create_project/" enctype="multipart/form-data">
+                  <fieldset>
+                             {% csrf_token %}
+
+                            {% for field in project_form.visible_fields %}
+                                  <div >
+                                    <label>{{ field.help_text}} <small>required</small>
+                                      {{ field }}
+                                    </label>
+                                  </div>
+                            {% endfor %}
+
+                        <p class="add_btn">
+                                 <input type="submit" name="submit" value="Create Project" class="logButton-larger" />
+                        </p>
+                </fieldset>
+            </form>
+
+{% endblock %}
+{#                                {% if field.help_text == "Project Description: " %}#}
+{#                                         <p class="pro_descr">{{ field }}</p>#}
+{#                                {% else %}#}
+{#                                         <p>{{ field }}</p>#}
+{#                                {% endif %}#}

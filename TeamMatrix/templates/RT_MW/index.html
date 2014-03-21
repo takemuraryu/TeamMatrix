@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+{% load static %}
+
+<html>
+
+	<head>
+		<title> Home page of Requirement Tracker</title>
+        <link type="text/css" rel="stylesheet" href="{% static 'css/base.css' %}">
+		<link type="text/css" rel="stylesheet" href="{% static 'css/foundation.css' %}">
+		<link type="text/css" rel="stylesheet" href="{% static 'css/normalize.css' %}">
+	</head>
+	<body>
+        <nav class="top-bar" data-topbar>
+          <ul class="title-area">
+            <li class="name">
+              <h1><a href="#">Requirements Tracker</a></h1>
+            </li>
+          </ul>
+
+          <section class="top-bar-section">
+            <!-- Right Nav Section -->
+           <form id="login_form" method="post" action="/login/">
+                {% csrf_token %}
+            <ul class="login-table">
+              <li><a href="#">Username: </a></li>
+              <li class="active"><input type="text" name="username" id="username"></li>
+              <li ><a href="#">Password: </a></li>
+              <li class="active"><input type="password" name="password" id="password"></li>
+            </ul>
+
+            <!-- Left Nav Section -->
+            <ul class="left">
+              <li><a href="#"><input type="submit" value="submit" class="logButton"/></a></li>
+            </ul>
+          </form>
+          </section>
+        </nav>
+
+        {% if registerd %}
+        <h3>Thank you for registering!</h3><br/>
+        <h3>Now trying to first login!</h3>
+        {% else %}
+    <div class="row" style="position:absolute; width:980px;">
+    <div class="large-3 columns sitePic" >
+{#      <div class="large-5 columns">#}
+      	<div class="panel sitePic" >
+            <img src="{% static 'logo.png' %}" />
+      	</div>
+{#      </div>#}
+    </div>
+
+    <div class="large-7 columns tap registerField" style="position:relative;">
+      	<div class="panel registerField" >
+
+              <form data-abide id="user_form" method="post" action="/register/" enctype="multipart/form-data">
+                  <fieldset>
+                  <legend style="background: #f2f2f2;">Registration</legend>
+                  {% csrf_token %}
+                    {% for field in user_form.visible_fields %}
+                    {{ field.errors }}
+                  <div >
+                    <label>
+                      <small>* </small>{{ field.help_text}}
+                      {{ field }}
+                    </label>
+                  </div>
+                      {% endfor %}
+
+
+
+                   {% for field in profile_form.visible_fields %}
+                                {{ field.errors }}
+
+                                    {% if field.help_text == ''%}
+                                          <div >
+                                            <label><small>* </small>Pictures
+                                                {{ field }}
+                                            </label>
+                                         </div>
+                                    {% else %}
+                                          <div >
+                                            <label><small>* </small>{{ field.help_text}}
+                                                {{ field }}
+                                            </label>
+                                         </div>
+                                    {% endif %}
+
+                                {% endfor %}
+                     <input type="hidden" name="check" value="regist" />
+                   <p class="add_btn">
+                       <input type="submit" name="submit" value="Register Account" class="logButton-larger"/>
+				   </p>
+                </fieldset>
+                </form>
+
+      	</div>
+    </div>
+    </div>
+    {% endif %}
+{#    <div class="row" style="position:absolute;bottom:0;width:100%;">#}
+{#            <label for="copyright" align="center"> &copy2014 Matrix </label>#}
+{#    </div>#}
+	</body>
+</html>
