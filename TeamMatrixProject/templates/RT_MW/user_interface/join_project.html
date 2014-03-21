@@ -1,0 +1,101 @@
+{% extends "RT_MW/base.html" %}
+{% block title %}Join a Project!{% endblock %}
+{% block body_button %}
+                <div class="pro-list-button">
+                <div style="width:90px; float:left;">
+                    <form id="login_form" method="get" action="/user_interface/create_project/">
+                            <input class="button tiny" type="submit" name="create_new_project" value="Create">
+                    </form>
+                </div>
+                <div style="width:90px; float:right;">
+                    <form id="login_form" method="get" action="/user_interface/join_project/">
+                        <span style="position:relative"><input class="button tiny" type="submit" name="join_project" value="Join"></span>
+                    </form>
+                </div>
+            </div>
+{% endblock %}
+
+{% block body_block %}
+     <form data-abide id="search_form" method="post" action="/user_interface/search_project/">
+         {% csrf_token %}
+       <fieldset>
+             <legend style="background: #f2f2f2;">Project Name</legend>
+            <div class="row">
+                <div class="large-7 columns">
+                    <label>
+                        <input type="text" name="search_textfield"/>
+                    </label>
+                </div>
+                <div class="large-4 columns">
+                   <input type="submit" name="Search" value="Search" class="logButton-larger">
+                </div>
+            </div>
+        </fieldset>
+
+        <br />
+
+           <fieldset>
+           <legend style="background: #f2f2f2;">Search Result</legend>
+            <div class="row schTable">
+
+                <div class="large-8 columns">
+                   <table>
+                        <thead>
+                        <tr>
+                          <th width="100">Name</th>
+                          <th width="80">Description</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% if projs %}
+                            {% for project in projs %}
+                                <tr>
+                                  <td>{{ project.projName }}</td>
+                                  <td>{{ project.description }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                                <tr>
+                                  <td>None</td>
+                                  <td>None</td>
+                                </tr>
+                        {% endif %}
+                        </tbody>
+                  </table>
+
+                </div>
+            </div>
+            </fieldset>
+    </form>
+
+    <br />
+
+    <form data-abide id="login_form" method="post" action="/user_interface/join_project/">
+        {% csrf_token %}
+        <fieldset>
+            <legend style="background: #f2f2f2;">Join</legend>
+            <div class="row">
+                <div class="large-7 columns">
+                    <label for="data-error">
+                        {% if not joind %}
+                               <span style="color:#f04124; margin-left:20px; ">Joining the project has been failed.</span>
+                        {% endif %}
+                    </label>
+                    <label>
+                         <small>*</small> Project:
+                        <input type="text" name="project_name"/>
+                    </label>
+                    <label>
+                        <small>*</small> Enroll Key:
+                        <input type="text" name="project_enrollment"/>
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-8 columns">
+                    <input type="submit" name="Join" value="Join" class="logButton-larger">
+                </div>
+            </div>
+        </fieldset>
+{% endblock %}
