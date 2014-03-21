@@ -1,1 +1,0 @@
-from django.contrib import adminfrom RT_MW.models import UserProfilefrom RT_MW.models import Project, Category, Specification, Lead, Joinadmin.site.register(UserProfile)admin.site.register(Project)admin.site.register(Category)admin.site.register(Specification)admin.site.register(Lead)admin.site.register(Join)

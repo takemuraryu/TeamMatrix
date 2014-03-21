@@ -1,15 +1,21 @@
-{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf190
-{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-\paperw11900\paperh16840\margl1440\margr1440\vieww10800\viewh8400\viewkind0
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+App "RequirementTracker" presented by Team Matrix
 
-\f0\fs24 \cf0 tester account 1 : \
-username : bobtester\
-e-mail : testeraaaa@hotmail.com     pass : x19900215\
-pass : bob\
-\
-tester account 2 :\
-username : tom tester\
-e-mail : testerbbbb@hotmail.com pass:x19900215\
-pass: tom}
+You can access the app with following link:
+http://takemura.pythonanywhere.com
+
+You can use the two test accounts and registed email adresses below if you want.
+
+tester account 1 : 
+username : bobtester
+e-mail : testeraaaa@hotmail.com     pass : x19900215
+pass : bob
+
+tester account 2 :
+username : tomtester
+e-mail : testerbbbb@hotmail.com pass:x19900215
+pass: tom
+
+
+Thanks for your evaluation.
+
+Enjoy
